@@ -41,6 +41,10 @@
             font-family: "Inter", Arial, sans-serif;
         }
 
+        main {
+            width: 100%;
+        }
+
         .hero {
             min-height: 100vh;
 
@@ -99,226 +103,206 @@
             color: var(--havoc-steel);
         }
 
-        .coming-soon {
-            margin-top: 32px;
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 100px 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+
+            margin-bottom: 40px;
+        }
+
+        .section-label {
+            font-family: "Oxanium", sans-serif;
+            font-size: 0.8rem;
+            color: var(--havoc-red);
+
+            letter-spacing: 0.15em;
+        }
+
+        .section-header h2 {
+            margin: 0;
+
+            font-family: "Oxanium", sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+
+            letter-spacing: 0.08em;
+        }
+
+        .fleet-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .aircraft-card {
+            padding: 30px;
+
+            background: rgba(31, 41, 55, 0.45);
+
+            border: 1px solid rgba(156, 163, 175, 0.15);
+            border-radius: 4px;
+        }
+
+        .aircraft-number {
+            margin-bottom: 30px;
 
             font-family: "Oxanium", sans-serif;
             font-size: 0.75rem;
-            font-weight: 500;
 
             letter-spacing: 0.2em;
 
+            color: var(--havoc-red);
+        }
+
+        .aircraft-card h3 {
+            margin: 0;
+
+            font-family: "Oxanium", sans-serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+
+        .aircraft-type {
+            margin-top: 8px;
+
+            font-size: 0.85rem;
+            color: var(--havoc-steel);
+
+            letter-spacing: 0.12em;
+        }
+
+        .aircraft-status {
+            margin-top: 30px;
+
+            font-size: 0.8rem;
             color: var(--havoc-cloud);
         }
+
+        .flight-card {
+            padding: 40px;
+
+            border-top: 1px solid rgba(156, 163, 175, 0.25);
+            border-bottom: 1px solid rgba(156, 163, 175, 0.25);
+        }
+
+        .flight-meta {
+            margin-bottom: 25px;
+
+            font-family: "Oxanium", sans-serif;
+
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+
+            color: var(--havoc-steel);
+        }
+
+        .route {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+
+            font-family: "Oxanium", sans-serif;
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 600;
+        }
+
+        .route-line {
+            width: 80px;
+            height: 2px;
+
+            background: var(--havoc-red);
+        }
+
+        .flight-details {
+            margin-top: 20px;
+
+            font-size: 1rem;
+        }
+
+        .flight-aircraft {
+            margin-top: 6px;
+
+            color: var(--havoc-steel);
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .platform-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 22px 24px;
+
+            color: var(--havoc-cloud);
+            text-decoration: none;
+
+            background: rgba(31, 41, 55, 0.4);
+
+            border: 1px solid rgba(156, 163, 175, 0.15);
+
+            transition: 0.2s ease;
+        }
+
+        .platform-link:hover {
+            border-color: var(--havoc-red);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            padding: 60px 24px;
+
+            text-align: center;
+
+            border-top: 1px solid rgba(156, 163, 175, 0.15);
+        }
+
+        .footer-brand {
+            font-family: "Oxanium", sans-serif;
+            font-weight: 600;
+
+            letter-spacing: 0.12em;
+        }
+
+        .footer-text,
+        .footer-copy {
+            margin-top: 8px;
+
+            font-size: 0.8rem;
+            color: var(--havoc-steel);
+        }
+
+        @media (max-width: 700px) {
+
+            .section {
+                padding: 70px 24px;
+            }
+
+            .fleet-grid,
+            .link-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flight-card {
+                padding: 30px 0;
+            }
+
+            .route-line {
+                width: 45px;
+            }
+        }
     </style>
-
-main {
-    width: 100%;
-}
-
-.section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 100px 24px;
-}
-
-.section-header {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-
-    margin-bottom: 40px;
-}
-
-.section-label {
-    font-family: "Oxanium", sans-serif;
-    font-size: 0.8rem;
-    color: var(--havoc-red);
-
-    letter-spacing: 0.15em;
-}
-
-.section-header h2 {
-    margin: 0;
-
-    font-family: "Oxanium", sans-serif;
-    font-size: 1.6rem;
-    font-weight: 600;
-
-    letter-spacing: 0.08em;
-}
-
-.fleet-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-}
-
-.aircraft-card {
-    padding: 30px;
-
-    background: rgba(31, 41, 55, 0.45);
-
-    border: 1px solid rgba(156, 163, 175, 0.15);
-    border-radius: 4px;
-}
-
-.aircraft-number {
-    margin-bottom: 30px;
-
-    font-family: "Oxanium", sans-serif;
-    font-size: 0.75rem;
-
-    letter-spacing: 0.2em;
-
-    color: var(--havoc-red);
-}
-
-.aircraft-card h3 {
-    margin: 0;
-
-    font-family: "Oxanium", sans-serif;
-    font-size: 2.2rem;
-    font-weight: 600;
-}
-
-.aircraft-type {
-    margin-top: 8px;
-
-    font-size: 0.85rem;
-    color: var(--havoc-steel);
-
-    letter-spacing: 0.12em;
-}
-
-.aircraft-status {
-    margin-top: 30px;
-
-    font-size: 0.8rem;
-    color: var(--havoc-cloud);
-}
-
-.flight-card {
-    padding: 40px;
-
-    border-top: 1px solid rgba(156, 163, 175, 0.25);
-    border-bottom: 1px solid rgba(156, 163, 175, 0.25);
-}
-
-.flight-meta {
-    margin-bottom: 25px;
-
-    font-family: "Oxanium", sans-serif;
-
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-
-    color: var(--havoc-steel);
-}
-
-.route {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-
-    font-family: "Oxanium", sans-serif;
-    font-size: clamp(2rem, 6vw, 4rem);
-    font-weight: 600;
-}
-
-.route-line {
-    width: 80px;
-    height: 2px;
-
-    background: var(--havoc-red);
-}
-
-.flight-details {
-    margin-top: 20px;
-
-    font-size: 1rem;
-}
-
-.flight-aircraft {
-    margin-top: 6px;
-
-    color: var(--havoc-steel);
-}
-
-.link-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-
-.platform-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 22px 24px;
-
-    color: var(--havoc-cloud);
-    text-decoration: none;
-
-    background: rgba(31, 41, 55, 0.4);
-
-    border: 1px solid rgba(156, 163, 175, 0.15);
-
-    transition: 0.2s ease;
-}
-
-.platform-link:hover {
-    border-color: var(--havoc-red);
-    transform: translateY(-2px);
-}
-
-footer {
-    padding: 60px 24px;
-
-    text-align: center;
-
-    border-top: 1px solid rgba(156, 163, 175, 0.15);
-}
-
-.footer-brand {
-    font-family: "Oxanium", sans-serif;
-    font-weight: 600;
-
-    letter-spacing: 0.12em;
-}
-
-.footer-text,
-.footer-copy {
-    margin-top: 8px;
-
-    font-size: 0.8rem;
-    color: var(--havoc-steel);
-}
-
-@media (max-width: 700px) {
-
-    .section {
-        padding: 70px 24px;
-    }
-
-    .fleet-grid,
-    .link-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .flight-card {
-        padding: 30px 0;
-    }
-
-    .route-line {
-        width: 45px;
-    }
-}
-
-</html>
-
-
 </head>
 
 <body>
@@ -326,9 +310,12 @@ footer {
     <main>
 
         <section class="hero">
+
             <div class="hero-content">
 
-                <h1 class="wordmark">HAVOC</h1>
+                <h1 class="wordmark">
+                    HAVOC
+                </h1>
 
                 <div class="aviation">
                     AVIATION
@@ -342,6 +329,7 @@ footer {
                 </p>
 
             </div>
+
         </section>
 
 
@@ -355,9 +343,14 @@ footer {
             <div class="fleet-grid">
 
                 <article class="aircraft-card">
-                    <div class="aircraft-number">HAVOC 1</div>
 
-                    <h3>G-HVOB</h3>
+                    <div class="aircraft-number">
+                        HAVOC 1
+                    </div>
+
+                    <h3>
+                        G-HVOB
+                    </h3>
 
                     <div class="aircraft-type">
                         AIRBUS A320-214
@@ -366,13 +359,19 @@ footer {
                     <div class="aircraft-status">
                         Active
                     </div>
+
                 </article>
 
 
                 <article class="aircraft-card">
-                    <div class="aircraft-number">HAVOC 2</div>
 
-                    <h3>G-HVOC</h3>
+                    <div class="aircraft-number">
+                        HAVOC 2
+                    </div>
+
+                    <h3>
+                        G-HVOC
+                    </h3>
 
                     <div class="aircraft-type">
                         AIRBUS A320-214
@@ -381,6 +380,7 @@ footer {
                     <div class="aircraft-status">
                         Active
                     </div>
+
                 </article>
 
             </div>
@@ -402,9 +402,9 @@ footer {
                 </div>
 
                 <div class="route">
-                    EGGW
+                    <span>EGGW</span>
                     <span class="route-line"></span>
-                    EHAM
+                    <span>EHAM</span>
                 </div>
 
                 <div class="flight-details">
@@ -472,5 +472,6 @@ footer {
 
     </footer>
 
-
 </body>
+
+</html>
