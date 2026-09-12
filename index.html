@@ -5,80 +5,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HAVOC | Virtual Aviation</title>
+    <title>HAVOC Aviation | Virtual Aviation</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oxanium:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --havoc-midnight: #0B0F14;
+            --havoc-slate: #1F2937;
+            --havoc-cloud: #F8F9FA;
+            --havoc-steel: #9CA3AF;
+            --havoc-red: #C8102E;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
-            background-color: #080808;
-            color: white;
-            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
 
-            height: 100vh;
+            background:
+                radial-gradient(circle at top, #15202b 0%, var(--havoc-midnight) 48%),
+                var(--havoc-midnight);
+
+            color: var(--havoc-cloud);
+
+            font-family: "Inter", Arial, sans-serif;
+        }
+
+        .hero {
+            min-height: 100vh;
 
             display: flex;
             justify-content: center;
             align-items: center;
 
+            padding: 40px 24px;
+
             text-align: center;
         }
 
-        .content {
-            padding: 30px;
+        .hero-content {
+            width: min(100%, 1000px);
         }
 
-        h1 {
+        .wordmark {
             margin: 0;
 
+            font-family: "Oxanium", sans-serif;
             font-size: clamp(4rem, 15vw, 9rem);
-            font-weight: 900;
+            font-weight: 700;
+            line-height: 0.9;
 
-            letter-spacing: 0.08em;
+            letter-spacing: 0.03em;
         }
 
-        .subtitle {
-            margin-top: 5px;
+        .aviation {
+            margin-top: 18px;
 
-            font-size: 0.9rem;
-            letter-spacing: 0.45em;
+            font-family: "Oxanium", sans-serif;
+            font-size: clamp(0.9rem, 2vw, 1.25rem);
+            font-weight: 300;
 
-            color: #aaaaaa;
+            letter-spacing: 0.55em;
+
+            color: var(--havoc-steel);
         }
 
-        .tagline {
-            margin-top: 60px;
+        .accent-line {
+            width: 90px;
+            height: 3px;
 
-            font-size: 1.4rem;
-            font-weight: bold;
-            letter-spacing: 0.2em;
+            margin: 36px auto;
+
+            background: var(--havoc-red);
+        }
+
+        .intro {
+            max-width: 620px;
+            margin: 0 auto;
+
+            font-size: 1rem;
+            line-height: 1.7;
+
+            color: var(--havoc-steel);
         }
 
         .coming-soon {
-            margin-top: 15px;
+            margin-top: 32px;
 
-            font-size: 0.85rem;
-            color: #777777;
+            font-family: "Oxanium", sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+
+            letter-spacing: 0.2em;
+
+            color: var(--havoc-cloud);
         }
     </style>
 </head>
 
-
 <body>
 
-    <main class="content">
+    <main class="hero">
 
-        <h1>HAVOC</h1>
+        <div class="hero-content">
 
-        <div class="subtitle">
-            VIRTUAL AVIATION
-        </div>
+            <h1 class="wordmark">
+                HAVOC
+            </h1>
 
-        <div class="tagline">
-            FLY DIFFERENT.
-        </div>
+            <div class="aviation">
+                AVIATION
+            </div>
 
-        <div class="coming-soon">
-            Full site coming soon.
+            <div class="accent-line"></div>
+
+            <p class="intro">
+                A personal virtual aviation project centred around flight simulation,
+                virtual flying and aviation content.
+            </p>
+
+            <div class="coming-soon">
+                FULL SITE COMING SOON
+            </div>
+
         </div>
 
     </main>
