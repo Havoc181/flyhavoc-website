@@ -9,7 +9,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oxanium:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oxanium:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
         :root {
@@ -31,8 +35,10 @@
         body {
             margin: 0;
             min-height: 100vh;
+
             background: var(--havoc-midnight);
             color: var(--havoc-cloud);
+
             font-family: "Inter", Arial, sans-serif;
         }
 
@@ -40,12 +46,18 @@
             width: 100%;
         }
 
+
+        /* HERO */
+
         .hero {
             min-height: 100vh;
+
             display: flex;
             justify-content: center;
             align-items: center;
+
             padding: 40px 24px;
+
             text-align: center;
 
             background:
@@ -88,6 +100,7 @@
         .accent-line {
             width: 90px;
             height: 3px;
+
             margin: 36px auto;
 
             background: var(--havoc-red);
@@ -103,8 +116,12 @@
             color: var(--havoc-steel);
         }
 
+
+        /* GENERAL SECTIONS */
+
         .section {
             max-width: 1100px;
+
             margin: 0 auto;
             padding: 100px 24px;
         }
@@ -113,13 +130,16 @@
             display: flex;
             align-items: center;
             gap: 18px;
+
             margin-bottom: 40px;
         }
 
         .section-label {
             font-family: "Oxanium", sans-serif;
             font-size: 0.8rem;
+
             color: var(--havoc-red);
+
             letter-spacing: 0.15em;
         }
 
@@ -129,12 +149,18 @@
             font-family: "Oxanium", sans-serif;
             font-size: 1.6rem;
             font-weight: 600;
+
             letter-spacing: 0.08em;
         }
 
+
+        /* FLEET */
+
         .fleet-grid {
             display: grid;
+
             grid-template-columns: repeat(2, 1fr);
+
             gap: 24px;
         }
 
@@ -164,6 +190,7 @@
 
             font-family: "Oxanium", sans-serif;
             font-size: 0.75rem;
+
             letter-spacing: 0.2em;
 
             color: var(--havoc-red);
@@ -181,16 +208,14 @@
             margin-top: 8px;
 
             font-size: 0.85rem;
+
             color: var(--havoc-steel);
+
             letter-spacing: 0.12em;
         }
 
-        .aircraft-status {
-            margin-top: 30px;
 
-            font-size: 0.8rem;
-            color: var(--havoc-cloud);
-        }
+        /* FLYING */
 
         .flight-section {
             max-width: none;
@@ -199,6 +224,7 @@
 
         .flight-wrap {
             min-height: 70vh;
+
             display: flex;
             align-items: center;
 
@@ -214,58 +240,65 @@
 
         .flight-inner {
             width: min(100%, 1100px);
+
             margin: 0 auto;
             padding: 100px 24px;
         }
 
-        .flight-card {
+        .flying-panel {
             max-width: 650px;
+
             padding: 40px 0;
 
             border-top: 1px solid rgba(156, 163, 175, 0.25);
             border-bottom: 1px solid rgba(156, 163, 175, 0.25);
         }
 
-        .flight-meta {
-            margin-bottom: 25px;
+        .flying-description {
+            max-width: 520px;
 
-            font-family: "Oxanium", sans-serif;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
+            margin: 0 0 28px;
 
-            color: var(--havoc-steel);
+            font-size: 1.1rem;
+            line-height: 1.7;
+
+            color: var(--havoc-cloud);
         }
 
-        .route {
-            display: flex;
+        .flying-link {
+            display: inline-flex;
             align-items: center;
-            gap: 18px;
+
+            gap: 14px;
+
+            padding-bottom: 6px;
 
             font-family: "Oxanium", sans-serif;
-            font-size: clamp(2rem, 6vw, 4rem);
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 500;
+
+            letter-spacing: 0.12em;
+
+            color: var(--havoc-cloud);
+            text-decoration: none;
+
+            border-bottom: 2px solid var(--havoc-red);
+
+            transition: 0.2s ease;
         }
 
-        .route-line {
-            width: 80px;
-            height: 2px;
-
-            background: var(--havoc-red);
+        .flying-link:hover {
+            color: var(--havoc-red);
         }
 
-        .flight-details {
-            margin-top: 20px;
-            font-size: 1rem;
-        }
 
-        .flight-aircraft {
-            margin-top: 6px;
-            color: var(--havoc-steel);
-        }
+        /* EXPLORE HAVOC */
 
         .link-grid {
             display: grid;
+
             grid-template-columns: repeat(2, 1fr);
+
             gap: 12px;
         }
 
@@ -288,8 +321,12 @@
 
         .platform-link:hover {
             border-color: var(--havoc-red);
+
             transform: translateY(-2px);
         }
+
+
+        /* FOOTER */
 
         footer {
             padding: 60px 24px;
@@ -302,6 +339,7 @@
         .footer-brand {
             font-family: "Oxanium", sans-serif;
             font-weight: 600;
+
             letter-spacing: 0.12em;
         }
 
@@ -310,8 +348,12 @@
             margin-top: 8px;
 
             font-size: 0.8rem;
+
             color: var(--havoc-steel);
         }
+
+
+        /* MOBILE */
 
         @media (max-width: 700px) {
 
@@ -344,20 +386,20 @@
                 padding: 70px 24px;
             }
 
-            .flight-card {
+            .flying-panel {
                 padding: 30px 0;
-            }
-
-            .route-line {
-                width: 45px;
             }
         }
     </style>
 </head>
 
+
 <body>
 
     <main>
+
+
+        <!-- HERO -->
 
         <section class="hero">
 
@@ -383,14 +425,25 @@
         </section>
 
 
+        <!-- FLEET -->
+
         <section class="section fleet-section">
 
             <div class="section-header">
-                <span class="section-label">01</span>
-                <h2>FLEET</h2>
+
+                <span class="section-label">
+                    01
+                </span>
+
+                <h2>
+                    FLEET
+                </h2>
+
             </div>
 
+
             <div class="fleet-grid">
+
 
                 <article class="aircraft-card">
 
@@ -412,10 +465,6 @@
 
                         <div class="aircraft-type">
                             AIRBUS A320-214
-                        </div>
-
-                        <div class="aircraft-status">
-                            Active
                         </div>
 
                     </div>
@@ -445,18 +494,17 @@
                             AIRBUS A320-214
                         </div>
 
-                        <div class="aircraft-status">
-                            Active
-                        </div>
-
                     </div>
 
                 </article>
+
 
             </div>
 
         </section>
 
+
+        <!-- FLYING -->
 
         <section class="flight-section">
 
@@ -464,32 +512,38 @@
 
                 <div class="flight-inner">
 
+
                     <div class="section-header">
-                        <span class="section-label">02</span>
-                        <h2>FLYING</h2>
-                    </div>
 
-                    <div class="flight-card">
+                        <span class="section-label">
+                            02
+                        </span>
 
-                        <div class="flight-meta">
-                            FEATURED FLIGHT
-                        </div>
-
-                        <div class="route">
-                            <span>EGGW</span>
-                            <span class="route-line"></span>
-                            <span>EHAM</span>
-                        </div>
-
-                        <div class="flight-details">
-                            Luton → Amsterdam
-                        </div>
-
-                        <div class="flight-aircraft">
-                            G-HVOB · A320-214
-                        </div>
+                        <h2>
+                            FLYING
+                        </h2>
 
                     </div>
+
+
+                    <div class="flying-panel">
+
+                        <p class="flying-description">
+                            Virtual flying, routes and operations with the HAVOC fleet.
+                        </p>
+
+                        <a
+                            class="flying-link"
+                            href="https://flylat.net/company/104798"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <span>VIEW HAVOC ON FLYLAT</span>
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
 
                 </div>
 
@@ -498,53 +552,79 @@
         </section>
 
 
+        <!-- EXPLORE -->
+
         <section class="section links-section">
 
             <div class="section-header">
-                <span class="section-label">03</span>
-                <h2>EXPLORE HAVOC</h2>
+
+                <span class="section-label">
+                    03
+                </span>
+
+                <h2>
+                    EXPLORE HAVOC
+                </h2>
+
             </div>
 
+
             <div class="link-grid">
-            
-                <a class="platform-link"
-                   href="https://www.youtube.com/@havocaviation"
-                   target="_blank"
-                   rel="noopener noreferrer">
+
+
+                <a
+                    class="platform-link"
+                    href="https://www.youtube.com/@havocaviation"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     <span>YouTube</span>
                     <span>→</span>
                 </a>
-            
-                <a class="platform-link"
-                   href="https://flylat.net/dashboard/company/company_profile.php?airline=104798"
-                   target="_blank"
-                   rel="noopener noreferrer">
+
+
+                <a
+                    class="platform-link"
+                    href="https://flylat.net/company/104798"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     <span>FlyLAT</span>
                     <span>→</span>
                 </a>
-            
-                <a class="platform-link"
-                   href="https://flightsim.to/profile/Havoc181"
-                   target="_blank"
-                   rel="noopener noreferrer">
+
+
+                <a
+                    class="platform-link"
+                    href="https://flightsim.to/profile/Havoc181"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     <span>Flightsim.to</span>
                     <span>→</span>
                 </a>
-            
-                <a class="platform-link"
-                   href="https://steamcommunity.com/id/havoc1811"
-                   target="_blank"
-                   rel="noopener noreferrer">
+
+
+                <a
+                    class="platform-link"
+                    href="https://steamcommunity.com/id/havoc1811"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     <span>Steam</span>
                     <span>→</span>
                 </a>
-            
+
+
             </div>
 
         </section>
 
+
     </main>
 
+
+    <!-- FOOTER -->
 
     <footer>
 
@@ -561,6 +641,7 @@
         </div>
 
     </footer>
+
 
 </body>
 
