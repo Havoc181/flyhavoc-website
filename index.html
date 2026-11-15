@@ -439,7 +439,7 @@
     grid-template-columns: minmax(0, 2fr) minmax(230px, 1fr);
 }
 .viewer-stage { min-width: 0; background: radial-gradient(ellipse at center, #243345, #0b0f14 76%); }
-.viewer-stage canvas { display: block; width: 100%; height: clamp(290px, 49vw, 480px); touch-action: pan-y; cursor: grab; }
+.viewer-stage canvas { display: block; width: 100%; height: clamp(290px, 49vw, 480px); touch-action: none; cursor: grab; }
 .viewer-stage canvas:active { cursor: grabbing; }
 .viewer-controls { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px 16px; justify-content: center; }
 .viewer-controls button, .route-list button {
@@ -451,7 +451,7 @@
     cursor: pointer;
 }
 .viewer-controls button:hover, .route-list button:hover { border-color: #f36b7d; }
-.viewer-controls button:focus-visible, .route-list button:focus-visible {
+.viewer-stage canvas:focus-visible, .viewer-controls button:focus-visible, .route-list button:focus-visible {
     outline: 2px solid #fff;
     outline-offset: 3px;
 }
@@ -661,14 +661,17 @@
             <div class="section-header"><h2 id="routes-heading">ROUTE NETWORK</h2></div>
             <div class="explore-panel route-explorer">
                 <div class="viewer-stage">
-                    <canvas data-viewer="globe" aria-label="Rotatable globe with routes from London Luton">Choose a destination from the route list.</canvas>
-                    <div class="viewer-controls" aria-label="Rotate view">
+                    <canvas data-viewer="globe" tabindex="0" aria-label="Rotatable route globe from London Luton" aria-describedby="globe-help">Choose a destination from the route list.</canvas>
+                    <div class="viewer-controls" role="group" aria-label="Globe controls">
                     <button type="button" data-action="left" aria-label="Rotate left">&larr;</button>
                     <button type="button" data-action="right" aria-label="Rotate right">&rarr;</button>
                     <button type="button" data-action="up" aria-label="Tilt up">&uarr;</button>
                     <button type="button" data-action="down" aria-label="Tilt down">&darr;</button>
+                    <button type="button" data-action="zoom-in" aria-label="Zoom in">+</button>
+                    <button type="button" data-action="zoom-out" aria-label="Zoom out">&minus;</button>
                     <button type="button" data-action="reset">Reset view</button>
                 </div>
+                    <p class="preview-note" id="globe-help" style="text-align: center; margin: 0 16px 16px;">Drag to rotate. Click the globe and scroll, pinch, or use + and − to zoom.</p>
                 </div>
                 <div class="route-sidebar">
                     <h3>From London Luton (LTN)</h3>
@@ -786,7 +789,9 @@ const havocCoastlines = [[[-0.05545,-0.98026,-0.1898],[-0.05931,-0.97895,-0.1952
     const home = [-9, 49];
     let [yaw, pitch] = home;
     let width, height, scale;
+    let magnification = 1;
     let pointer;
+    const touches = new Map();
     let selected = -1;
     const rad = Math.PI / 180;
     const routes = [
@@ -896,6 +901,7 @@ const havocCoastlines = [[[-0.05545,-0.98026,-0.1898],[-0.05931,-0.97895,-0.1952
     }
 
     function draw() {
+        scale = Math.min(width, height) * .46 * magnification;
         ctx.clearRect(0, 0, width, height);
         drawGlobe();
     }
@@ -906,7 +912,6 @@ const havocCoastlines = [[[-0.05545,-0.98026,-0.1898],[-0.05931,-0.97895,-0.1952
         canvas.width = Math.round(width * ratio);
         canvas.height = Math.round(height * ratio);
         ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-        scale = Math.min(width, height) * .46;
         draw();
     }
     function rotate(horizontal, vertical) {
@@ -916,28 +921,73 @@ const havocCoastlines = [[[-0.05545,-0.98026,-0.1898],[-0.05931,-0.97895,-0.1952
     }
 
     const controls = canvas.parentElement.querySelector('.viewer-controls');
+    const turns = {left: [-15,0], right: [15,0], up: [0,15], down: [0,-15]};
+    function zoom(factor) {
+        magnification = Math.max(1, Math.min(4, magnification * factor));
+        draw();
+    }
+    function resetView() {
+        [yaw, pitch] = home;
+        magnification = 1;
+        draw();
+    }
     controls.addEventListener('click', event => {
         const action = event.target.closest('button')?.dataset.action;
-        if (action === 'reset') { [yaw, pitch] = home; draw(); return; }
-        const turns = {left: [-15,0], right: [15,0], up: [0,15], down: [0,-15]};
-        if (turns[action]) rotate(...turns[action]);
+        if (action === 'reset') resetView();
+        else if (action === 'zoom-in') zoom(1.25);
+        else if (action === 'zoom-out') zoom(1 / 1.25);
+        else if (turns[action]) rotate(...turns[action]);
+    });
+    // Keep normal page scrolling until the visitor engages the globe.
+    canvas.addEventListener('wheel', event => {
+        if (document.activeElement !== canvas || event.ctrlKey || event.metaKey) return;
+        event.preventDefault();
+        const pixels = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? height : 1);
+        zoom(Math.exp(-pixels * .002));
+    }, {passive: false});
+    canvas.addEventListener('keydown', event => {
+        const directions = {ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down'};
+        if (event.key === '+' || event.key === '=') zoom(1.25);
+        else if (event.key === '-') zoom(1 / 1.25);
+        else if (event.key === 'Home') resetView();
+        else if (directions[event.key]) rotate(...turns[directions[event.key]]);
+        else return;
+        event.preventDefault();
     });
 
+    function touchDistance() {
+        const [a, b] = touches.values();
+        return b ? Math.hypot(a.x - b.x, a.y - b.y) : 0;
+    }
     canvas.addEventListener('pointerdown', event => {
+        if (event.pointerType === 'touch') {
+            touches.set(event.pointerId, {x: event.clientX, y: event.clientY});
+            canvas.setPointerCapture(event.pointerId);
+            if (touches.size > 1) { pointer = undefined; return; }
+        }
         if (!event.isPrimary || event.button !== 0) return;
         pointer = {id: event.pointerId, x: event.clientX, y: event.clientY, moved: false};
         canvas.setPointerCapture(event.pointerId);
     });
     canvas.addEventListener('pointermove', event => {
+        if (touches.has(event.pointerId)) {
+            const previous = touchDistance();
+            touches.set(event.pointerId, {x: event.clientX, y: event.clientY});
+            if (previous > 0) { zoom(touchDistance() / previous); return; }
+        }
         if (pointer?.id !== event.pointerId) return;
         const dx = event.clientX - pointer.x;
         const dy = event.clientY - pointer.y;
         if (!pointer.moved && Math.hypot(dx, dy) < 4) return;
         pointer = {id: event.pointerId, x: event.clientX, y: event.clientY, moved: true};
-        rotate(-dx * .55, dy * .55);
+        rotate(-dx * .55 / magnification, dy * .55 / magnification);
     });
-    canvas.addEventListener('pointercancel', () => { pointer = undefined; });
+    canvas.addEventListener('lostpointercapture', event => {
+        touches.delete(event.pointerId);
+        if (pointer?.id === event.pointerId) pointer = undefined;
+    });
     canvas.addEventListener('pointerup', event => {
+        touches.delete(event.pointerId);
         if (pointer?.id !== event.pointerId) return;
         if (!pointer.moved) {
             const rect = canvas.getBoundingClientRect();
