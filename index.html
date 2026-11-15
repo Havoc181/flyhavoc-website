@@ -23,7 +23,7 @@
     <meta property="og:description"
           content="A personal virtual aviation project centred around flight simulation, virtual flying and aviation content.">
     <meta property="og:url" content="https://flyhavoc.com/">
-    <meta property="og:image" content="https://flyhavoc.com/images/hero.jpg">
+    <meta property="og:image" content="https://flyhavoc.com/images/hero-hvod.jpg">
     <meta property="og:image:alt" content="HAVOC Aviation Airbus A320">
     
     
@@ -32,7 +32,7 @@
     <meta name="twitter:title" content="HAVOC Aviation">
     <meta name="twitter:description"
           content="A personal virtual aviation project centred around flight simulation, virtual flying and aviation content.">
-    <meta name="twitter:image" content="https://flyhavoc.com/images/hero.jpg">
+    <meta name="twitter:image" content="https://flyhavoc.com/images/hero-hvod.jpg">
     
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -89,20 +89,20 @@
 
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
 
-            padding: 40px 24px;
+            padding: 40px 24px clamp(30px, 5vh, 64px);
 
             text-align: center;
 
             background:
                 linear-gradient(
                     to bottom,
-                    rgba(11, 15, 20, 0.28) 0%,
-                    rgba(11, 15, 20, 0.58) 45%,
+                    rgba(11, 15, 20, 0.15) 0%,
+                    rgba(11, 15, 20, 0.20) 45%,
                     rgba(11, 15, 20, 0.96) 100%
                 ),
-                url("images/hero.jpg") center center / cover no-repeat;
+                url("images/hero-hvod.jpg") 44% center / cover no-repeat;
         }
 
         .hero-content {
@@ -267,10 +267,10 @@
                 linear-gradient(
                     to right,
                     rgba(11, 15, 20, 0.95) 0%,
-                    rgba(11, 15, 20, 0.70) 45%,
-                    rgba(11, 15, 20, 0.30) 100%
+                    rgba(11, 15, 20, 0.76) 45%,
+                    rgba(11, 15, 20, 0.38) 100%
                 ),
-                url("images/flying.jpg") center center / cover no-repeat;
+                url("images/flying-hvod.jpg") 78% center / cover no-repeat;
         }
 
         .flight-inner {
@@ -414,7 +414,7 @@
                         rgba(11, 15, 20, 0.70) 0%,
                         rgba(11, 15, 20, 0.92) 100%
                     ),
-                    url("images/flying.jpg") center center / cover no-repeat;
+                    url("images/flying-hvod.jpg") 78% center / cover no-repeat;
             }
 
             .flight-inner {
