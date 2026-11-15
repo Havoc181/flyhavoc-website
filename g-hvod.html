@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0B0F14">
+    <title>G-HVOD | HAVOC Aviation</title>
+    <link rel="icon" href="favicon-32x32.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oxanium:wght@500;700&display=swap">
+    <style>
+.explore-panel {
+    background: #101923;
+    border: 1px solid #354352;
+    border-top: 2px solid #c8102e;
+}
+.route-explorer {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(230px, 1fr);
+}
+.viewer-stage { min-width: 0; background: radial-gradient(ellipse at center, #243345, #0b0f14 76%); }
+.viewer-stage canvas { display: block; width: 100%; height: clamp(290px, 49vw, 480px); touch-action: pan-y; cursor: grab; }
+.viewer-stage canvas[hidden], .viewer-fallback[hidden] { display: none; }
+.viewer-fallback { display: block; width: 100%; height: auto; }
+.viewer-stage canvas:active { cursor: grabbing; }
+.viewer-controls { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px 16px; justify-content: center; }
+.viewer-controls button, .route-list button {
+    color: inherit;
+    font: inherit;
+    background: #1f2937;
+    border: 1px solid #46556a;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.viewer-controls button:hover, .route-list button:hover { border-color: #f36b7d; }
+.viewer-controls button:focus-visible, .route-list button:focus-visible, .fleet-detail:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+.route-sidebar { padding: 24px; border-left: 1px solid #354352; }
+.preview-note { color: #b0bac8; font-size: .875rem; }
+.route-list { display: grid; gap: 8px; padding: 0; list-style: none; }
+.route-list button { width: 100%; display: flex; justify-content: space-between; gap: 8px; text-align: left; }
+.route-list button[aria-pressed="true"] { background: #522133; border-color: #f36b7d; }
+.route-info { min-height: 4em; line-height: 1.5; }
+.fleet-detail { display: block; color: inherit; text-decoration: none; }
+.fleet-detail:hover { border-color: #c8102e; }
+.fleet-detail-label { display: inline-block; margin-top: 18px; border-bottom: 2px solid #c8102e; }
+.aircraft-page { margin: 0; background: #0b0f14; color: #f8f9fa; font-family: Inter, Arial, sans-serif; }
+.aircraft-page main { max-width: 1080px; padding: 42px 24px 64px; margin: auto; }
+.aircraft-page h1 { font: 700 clamp(2.5rem, 7vw, 4.5rem)/1 Oxanium, sans-serif; margin: 24px 0 8px; }
+.aircraft-page a { color: inherit; }
+.aircraft-page .aircraft-photo { display: block; width: 100%; height: auto; margin-top: 28px; }
+@media (max-width: 760px) {
+    .route-explorer { grid-template-columns: 1fr; }
+    .route-sidebar { border-left: 0; border-top: 1px solid #354352; }
+}
+.fleet-detail-label { margin: 0 32px 24px; }
+@media (max-width: 700px) {
+    .fleet-detail-label { margin-inline: 24px; }
+}
+
+</style>
+
+<style>
+    model-viewer { display:block; width:100%; height:clamp(300px,58vw,590px); }
+    model-viewer img { width:100%; height:100%; object-fit:contain; }
+</style>
+</head>
+<body class="aircraft-page">
+    <main>
+        <nav aria-label="Fleet"><a href="index.html#G-HVOD">&larr; Back to fleet</a> &middot; <a href="g-hvob.html">Explore G-HVOB</a> &middot; <a href="g-hvoc.html">Explore G-HVOC</a></nav>
+        <h1>G-HVOD</h1>
+        <p>HAVOC 3 &middot; Black Edition &middot; Airbus A320-214 &middot; London Luton</p>
+        <div class="explore-panel viewer-stage">
+            <model-viewer alt="Rotatable Airbus A320-214 in G-HVOD HAVOC livery"
+                camera-controls touch-action="pan-y" interaction-prompt="none" shadow-intensity="0.7"
+                camera-orbit="-52deg 72deg auto" poster="g-hvod.png" data-model="g-hvod.glb">
+                <img slot="poster" src="g-hvod.png" alt="G-HVOD exterior preview">
+            </model-viewer>
+        </div>
+        <p id="viewer-status" class="preview-note" role="status">Drag to rotate or scroll to zoom.</p>
+        <p class="preview-note">Exterior adapted from <a href="https://github.com/legoboyvdlp/A320-family">FlightGear A320-family</a>.
+            <a href="g-hvod.blend">Editable model</a> &middot;
+            <a href="flightgear-copyright.txt">Copyright</a> &middot;
+            <a href="flightgear-gpl-2.0.txt">GPL v2</a></p>
+    </main>
+
+<script type="module">
+    const viewer = document.querySelector('model-viewer');
+    const status = document.querySelector('#viewer-status');
+    if (location.protocol === 'file:') {
+        status.textContent = 'Aircraft preview image. Open the hosted page for the interactive view.';
+    } else {
+        try {
+            await import('./model-viewer.min.js');
+            viewer.addEventListener('error', () => {
+                status.textContent = 'The 3D view could not load. The aircraft preview image is shown.';
+            });
+            viewer.src = viewer.dataset.model;
+        } catch {
+            status.textContent = 'The 3D viewer is unavailable. The aircraft preview image is shown.';
+        }
+    }
+</script>
+</body>
+</html>
