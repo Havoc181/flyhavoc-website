@@ -461,6 +461,14 @@
 .route-list button { width: 100%; display: flex; justify-content: space-between; gap: 8px; text-align: left; }
 .route-list button[aria-pressed="true"] { background: #522133; border-color: #f36b7d; }
 .route-info { min-height: 4em; line-height: 1.5; }
+.flight-board { width: 100%; border-collapse: collapse; text-align: left; }
+.flight-board th, .flight-board td { padding: 12px 8px; border-bottom: 1px solid #354352; }
+.flight-board th { color: var(--havoc-steel); }
+.flight-board a { color: inherit; }
+@media (max-width: 520px) {
+    .flight-board { font-size: .85rem; }
+    .flight-board th, .flight-board td { padding: 10px 4px; }
+}
 @media (max-width: 760px) {
     .route-explorer { grid-template-columns: 1fr; }
     .route-sidebar { border-left: 0; border-top: 1px solid #354352; }
@@ -657,6 +665,15 @@
         </section>
 
 
+        <section class="section" id="recent-flights" aria-labelledby="recent-flights-heading">
+            <div class="section-header"><h2 id="recent-flights-heading">RECENT FLIGHTS</h2></div>
+            <p id="flight-board-status" class="preview-note">No completed HAVOC flights have been published here yet.</p>
+            <table class="flight-board" aria-labelledby="recent-flights-heading" hidden>
+                <thead><tr><th scope="col">Route</th><th scope="col">Aircraft</th><th scope="col">Flight date</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
         <section class="section" id="routes" aria-labelledby="routes-heading">
             <div class="section-header"><h2 id="routes-heading">ROUTE NETWORK</h2></div>
             <div class="explore-panel route-explorer">
@@ -677,6 +694,7 @@
                     <h3>From London Luton (LTN)</h3>
                     <p class="preview-note">12 verified routes from flyLAT &middot; 13 November 2026</p>
                     <p class="route-info" aria-live="polite">Choose a destination to see its airport and route distance.</p>
+                    <p class="preview-note" id="route-latest-flight" aria-live="polite" hidden></p>
                     <ul class="route-list" aria-label="Destinations"></ul>
                     <noscript><a href="https://flylat.net/dashboard/gateway">Open flyLAT</a></noscript>
                 </div>
@@ -1014,6 +1032,68 @@ const havocCoastlines = [[[-0.05545,-0.98026,-0.1898],[-0.05931,-0.97895,-0.1952
     });
 
     const buttons = [];
+    const airportICAO = {
+        LTN: 'EGGW', AMS: 'EHAM', BCN: 'LEBL', BER: 'EDDB', MAD: 'LEMD', MUC: 'EDDM',
+        NCE: 'LFMN', PMO: 'LICJ', CDG: 'LFPG', RTM: 'EHRD', SZG: 'LOWS', WAW: 'EPWA', ZRH: 'LSZH'
+    };
+    const fleet = new Set(['G-HVOB', 'G-HVOC', 'G-HVOD']);
+    const flightDate = new Intl.DateTimeFormat('en-GB', {dateStyle: 'medium', timeZone: 'UTC'});
+    const latestFlight = document.querySelector('#route-latest-flight');
+    let flights = [];
+    let flightsLoaded = false;
+
+    function formatFlightDate(date) {
+        return flightDate.format(new Date(date + 'T00:00:00Z'));
+    }
+
+    function updateRouteFlight() {
+        latestFlight.hidden = selected < 0 || !flightsLoaded;
+        if (latestFlight.hidden) return;
+        const destination = routes[selected][2];
+        const key = code => airportICAO[code] ?? code;
+        const flight = flights.find(({departure, arrival}) =>
+            (key(departure) === 'EGGW' && key(arrival) === key(destination)) ||
+            (key(arrival) === 'EGGW' && key(departure) === key(destination))
+        );
+        latestFlight.textContent = flight
+            ? `Latest published flight: ${flight.departure} → ${flight.arrival} · ${flight.aircraft} · ${formatFlightDate(flight.date)}`
+            : 'No completed HAVOC flight has been published for this route yet.';
+    }
+
+    async function loadFlights() {
+        const status = document.querySelector('#flight-board-status');
+        try {
+            const response = await fetch('data/recent-flights.json');
+            if (!response.ok) throw new Error('Flight history unavailable');
+            const records = await response.json();
+            flights = records.filter(flight => flight && fleet.has(flight.aircraft) &&
+                /^[A-Z]{3,4}$/.test(flight.departure) && /^[A-Z]{3,4}$/.test(flight.arrival) &&
+                /^\d{4}-\d{2}-\d{2}$/.test(flight.date) &&
+                Number.isFinite(Date.parse(flight.date)) &&
+                new Date(flight.date).toISOString().slice(0, 10) === flight.date)
+                .sort((a, b) => b.date.localeCompare(a.date));
+            const table = document.querySelector('.flight-board');
+            for (const flight of flights.slice(0, 5)) {
+                const row = table.tBodies[0].insertRow();
+                row.insertCell().textContent = `${flight.departure} → ${flight.arrival}`;
+                const link = document.createElement('a');
+                link.href = flight.aircraft.toLowerCase() + '.html';
+                link.textContent = flight.aircraft;
+                row.insertCell().append(link);
+                const date = document.createElement('time');
+                date.dateTime = flight.date;
+                date.textContent = formatFlightDate(flight.date);
+                row.insertCell().append(date);
+            }
+            table.hidden = flights.length === 0;
+            status.hidden = flights.length > 0;
+            flightsLoaded = true;
+            updateRouteFlight();
+        } catch {
+            status.textContent = 'Flight history is temporarily unavailable.';
+        }
+    }
+
     function select(index) {
         selected = index;
         const [city, airport, code, lat, lon, distance] = routes[index];
@@ -1021,6 +1101,7 @@ const havocCoastlines = [[[-0.05545,-0.98026,-0.1898],[-0.05931,-0.97895,-0.1952
         buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
         document.querySelector('.route-info').textContent =
             'London Luton to ' + city + ' · ' + airport + ' (' + code + ') · ' + distance + ' NM';
+        updateRouteFlight();
         draw();
     }
     {
@@ -1041,6 +1122,7 @@ const havocCoastlines = [[[-0.05545,-0.98026,-0.1898],[-0.05931,-0.97895,-0.1952
     }
     new ResizeObserver(resize).observe(canvas);
     resize();
+    loadFlights();
 })();
 
 </script>
