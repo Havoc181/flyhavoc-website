@@ -1056,17 +1056,18 @@ const havocCoastlines = [[[-0.05545,-0.98026,-0.1898],[-0.05931,-0.97895,-0.1952
             (key(arrival) === 'EGGW' && key(departure) === key(destination))
         );
         latestFlight.textContent = flight
-            ? `Latest published flight: ${flight.departure} → ${flight.arrival} · ${flight.aircraft} · ${formatFlightDate(flight.date)}`
+            ? `Latest published flight: ${flight.departure} → ${flight.arrival} · ${flight.aircraft ?? flight.aircraftType} · ${formatFlightDate(flight.date)}`
             : 'No completed HAVOC flight has been published for this route yet.';
     }
 
     async function loadFlights() {
         const status = document.querySelector('#flight-board-status');
         try {
-            const response = await fetch('data/recent-flights.json');
+            const response = await fetch('data/recent-flights.json', {cache: 'no-cache'});
             if (!response.ok) throw new Error('Flight history unavailable');
             const records = await response.json();
-            flights = records.filter(flight => flight && fleet.has(flight.aircraft) &&
+            flights = records.filter(flight => flight &&
+                (fleet.has(flight.aircraft) || (flight.aircraft == null && flight.aircraftType === 'A320-214')) &&
                 /^[A-Z]{3,4}$/.test(flight.departure) && /^[A-Z]{3,4}$/.test(flight.arrival) &&
                 /^\d{4}-\d{2}-\d{2}$/.test(flight.date) &&
                 Number.isFinite(Date.parse(flight.date)) &&
@@ -1076,10 +1077,14 @@ const havocCoastlines = [[[-0.05545,-0.98026,-0.1898],[-0.05931,-0.97895,-0.1952
             for (const flight of flights.slice(0, 5)) {
                 const row = table.tBodies[0].insertRow();
                 row.insertCell().textContent = `${flight.departure} → ${flight.arrival}`;
-                const link = document.createElement('a');
-                link.href = flight.aircraft.toLowerCase() + '.html';
-                link.textContent = flight.aircraft;
-                row.insertCell().append(link);
+                const aircraft = row.insertCell();
+                aircraft.textContent = flight.aircraft ?? flight.aircraftType;
+                if (flight.aircraft) {
+                    const link = document.createElement('a');
+                    link.href = flight.aircraft.toLowerCase() + '.html';
+                    link.textContent = flight.aircraft;
+                    aircraft.replaceChildren(link);
+                }
                 const date = document.createElement('time');
                 date.dateTime = flight.date;
                 date.textContent = formatFlightDate(flight.date);
